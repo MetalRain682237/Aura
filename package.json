@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/aidanskye42/Aura#readme",
   "dependencies": {
+    "tar": "^4.4.2",
     "webpack": "^4.31.0"
   },
   "devDependencies": {

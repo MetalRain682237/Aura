@@ -25,12 +25,8 @@ body{
   background-color: $background;
   height: 100%;
 
-  h1{
+  canvas{
     margin-top: 50px;
-    margin-bottom: 20px;
-  }
-  #canvas{
-  
   }
   section{
     margin-top: 20px;
@@ -53,7 +49,7 @@ body{
     h2 + ul{
       display: none;
       position: absolute;
-      top: 65px;
+      top: 70px;
       left: 20px;
       list-style: none;
       padding: 0px;
