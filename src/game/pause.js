@@ -1,5 +1,5 @@
 import { COLOR, FONT, WIDTH, FPS, HEIGHT, PADDING } from "./constants";
-import { animateLine} from "../util/canvas_util";
+import { animateLine, hexToRGB} from "../util/canvas_util";
 
 
 export const pauseScreen = (ctx, frame) => {
@@ -15,7 +15,7 @@ const drawPause = (ctx, frame) => {
   const width = ctx.measureText(text).width;
   const startX = WIDTH / 2 - width / 2;
 
-  ctx.fillStyle = COLOR.TRANSPARENT_BACKGROUND;
+  ctx.fillStyle = hexToRGB(COLOR.BACKGROUND, 0.7);
   ctx.fillRect(3*PADDING/2 - 2, HEIGHT/2 - 50, WIDTH-(3*PADDING)+4, 65);
   ctx.fillStyle = COLOR.LIGHT_BLUE;
   ctx.fillText(text, WIDTH / 2, HEIGHT/2);

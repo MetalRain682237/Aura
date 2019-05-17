@@ -15,8 +15,8 @@ const drawOverlay = (ctx, frame)=>{
   for(let x = 0; x * MOSAIC_SIZE < WIDTH; x++ ){
     for(let y = 0; y * MOSAIC_SIZE < HEIGHT; y++){
       tile=random(tile);
-      const alpha = 0.2 + (0.7 * random(tile));
-      ctx.fillStyle = hexToRGB(COLOR.BACKGROUND, alpha);
+      const alpha = 0.01 + (0.3 * random(tile));
+      ctx.fillStyle = hexToRGB(COLOR.LIGHT_BLUE, alpha);
       ctx.fillRect(x*MOSAIC_SIZE, y*MOSAIC_SIZE, MOSAIC_SIZE, MOSAIC_SIZE);
     }
   }
@@ -24,6 +24,8 @@ const drawOverlay = (ctx, frame)=>{
 };
 const drawGameOver = (ctx, frame) => {
   ctx.beginPath();
+  ctx.fillStyle = hexToRGB(COLOR.BACKGROUND, 0.7);
+  ctx.fillRect(0,150,WIDTH, 190);
   ctx.strokeStyle = COLOR.RED;
   ctx.fillStyle = COLOR.RED;
   ctx.textAlign = "center";
