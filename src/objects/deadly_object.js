@@ -6,5 +6,6 @@ export default class DeadlyObject extends GameObject{
     options.color = options.color || COLOR.RED;
     super(options);
     this.deadly = true;
+    this.damage = options.damage || 1;
   }
 }

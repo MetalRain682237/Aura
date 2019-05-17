@@ -11,8 +11,10 @@ const drawLogo = (ctx)=>{
   ctx.beginPath();
   ctx.fillStyle = COLOR.LIGHT_BLUE;
   ctx.textAlign = "center";
+  ctx.shadowColor = COLOR.LIGHT_BLUE;
+  ctx.shadowBlur = 10;
   ctx.font = "50px " + FONT;
-  ctx.fillText("Aura", WIDTH/ 2, 60);
+  ctx.fillText("AURA", WIDTH/ 2, 60);
   ctx.closePath();
 };
 
@@ -23,6 +25,8 @@ const drawMenu = (ctx, frame)=>{
   ctx.textAlign = "center";
   ctx.font = "30px " + FONT;
   const text = "Press ENTER to begin";
+  ctx.shadowColor = COLOR.LIGHT_BLUE;
+  ctx.shadowBlur = 10;
   ctx.fillText(text, WIDTH/2, 200);
   ctx.closePath();
   const width = ctx.measureText(text).width;

@@ -18,6 +18,8 @@ export const animateLine = (ctx, frame, duration, x, y, width, lineWidth = 1)=>{
 };
 
 export const drawBackground = (ctx) => {
+  ctx.shadowColor = COLOR.LIGHT_BLUE;
+  ctx.shadowBlur = 0;
   for(let x = 0; x*BACKGROUND_TILE_SIZE <= WIDTH; x++){
     for(let y = 0; y*BACKGROUND_TILE_SIZE <= HEIGHT; y++){
       ctx.drawImage(IMAGES.BACKGROUND, x*BACKGROUND_TILE_SIZE, y*BACKGROUND_TILE_SIZE, BACKGROUND_TILE_SIZE, BACKGROUND_TILE_SIZE);
@@ -33,6 +35,8 @@ const clearPadding = (ctx)=>{
   ctx.clearRect(0,HEIGHT-PADDING,WIDTH,PADDING);
   
   ctx.fillStyle = COLOR.BACKGROUND;
+  ctx.shadowColor = COLOR.LIGHT_BLUE;
+  ctx.shadowBlur = 0;
   ctx.fillRect(0,0,PADDING,HEIGHT);
   ctx.fillRect(0,0,WIDTH,PADDING);
   ctx.fillRect(WIDTH-PADDING,0,PADDING,HEIGHT);

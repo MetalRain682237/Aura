@@ -11,6 +11,7 @@ export const gameOverScreen = (ctx, frame) => {
 const drawOverlay = (ctx, frame)=>{
   const animationPosition = random(Math.floor(frame / (3.75*SPRITE_DURATION)));
   let tile = animationPosition;
+  ctx.shadowBlur = 0;
   ctx.beginPath();
   for(let x = 0; x * MOSAIC_SIZE < WIDTH; x++ ){
     for(let y = 0; y * MOSAIC_SIZE < HEIGHT; y++){
@@ -30,6 +31,8 @@ const drawGameOver = (ctx, frame) => {
   ctx.fillStyle = COLOR.RED;
   ctx.textAlign = "center";
   ctx.font = "60px " + FONT;
+  ctx.shadowColor = COLOR.RED;
+  ctx.shadowBlur = 5 + (2 * (Math.sin(frame * 2 / FPS) + 1));
   const text = "YOU DIED";
   ctx.fillText(text, WIDTH / 2, 220);
   ctx.closePath();

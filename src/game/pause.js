@@ -7,6 +7,7 @@ export const pauseScreen = (ctx, frame) => {
 };
 
 const drawPause = (ctx, frame) => {
+  ctx.shadowColor = COLOR.LIGHT_BLUE;
   ctx.beginPath();
   ctx.strokeStyle = COLOR.LIGHT_BLUE;
   ctx.textAlign = "center";
@@ -14,9 +15,11 @@ const drawPause = (ctx, frame) => {
   const text = "PAUSED";
   const width = ctx.measureText(text).width;
   const startX = WIDTH / 2 - width / 2;
-
+  
+  ctx.shadowBlur = 0;
   ctx.fillStyle = hexToRGB(COLOR.BACKGROUND, 0.7);
   ctx.fillRect(3*PADDING/2 - 2, HEIGHT/2 - 50, WIDTH-(3*PADDING)+4, 65);
+  ctx.shadowBlur = 5 + (2 * (Math.sin(frame * 2 / FPS) + 1));
   ctx.fillStyle = COLOR.LIGHT_BLUE;
   ctx.fillText(text, WIDTH / 2, HEIGHT/2);
   ctx.closePath();

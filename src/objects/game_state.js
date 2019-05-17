@@ -3,6 +3,7 @@ import { checkBounds, boxCollision, directionForKeys } from "../util/game_util";
 import Player from "./player";
 import GameObject from "./game_object";
 import DeadlyObject from "./deadly_object";
+import Enemy from "./enemy";
 
 export default class GameState{
   constructor(){
@@ -30,11 +31,11 @@ export default class GameState{
       new GameObject({
         position: [424, 308],
         velocity: [0,0],
-        width: 148,
+        width: 149,
         height: 3
       }),
       new GameObject({
-        position: [424, 456],
+        position: [424, 458],
         velocity: [0,0],
         width: 426,
         height: 3
@@ -48,69 +49,170 @@ export default class GameState{
       }),
       
       new DeadlyObject({
-        position: [848, 308],
+        position: [849, 308],
         velocity: [0,0],
         width: 3,
-        height: 151,
+        height: 153,
         grace: [[3,3],[0,0]]
       }),
       
     ];
+    this.enemies = [
+      new Enemy({
+        position: [100 , 100],
+        velocity: [0, 0],
+        width: 30,
+        height: 30,
+        color: "purple"
+      }),
+      new Enemy({
+        position: [1100 , 100],
+        velocity: [0, 0],
+        width: 30,
+        height: 30,
+        color: "orange"
+      }),
+      new Enemy({
+        position: [100 , 600],
+        velocity: [0, 0],
+        width: 30,
+        height: 30,
+        color: "#BADA55"
+      }),
+      new Enemy({
+        position: [1100 , 600],
+        velocity: [0, 0],
+        width: 30,
+        height: 30,
+        color: "green"
+      }),
+    ];
   }
   update(delta, keydown){
+    this.enemies.forEach((enemy, i)=>this.updateEnemy(delta, enemy, i));
+    this.updatePlayer(delta, keydown);
+
+  }
+  killEnemy(enemy){
+    enemy.die();
+    this.enemies = this.enemies.filter(value => (value !== enemy));
+  }
+  updateEnemy(delta, enemy, enemyNumber){
+    enemy.moveToward(this.player);
+    const nextPosition = enemy.nextPositionAsObject(delta);
+    if (this.checkCollisions(nextPosition, enemyNumber)) {
+      enemy.setHP(nextPosition.hp);
+      enemy.moveToNextPosition(delta);
+    } else {
+      if (nextPosition.hp <= 0) {
+        this.killEnemy(enemy);
+        enemy.position = nextPosition.position;
+      } else {
+        if (enemy.velocity[0] !== 0 && enemy.velocity[1] !== 0) {
+          const xMove = enemy.nextXPositionAsObject(delta);
+          if (this.checkCollisions(xMove, enemyNumber)) {
+            enemy.setHP(xMove.hp);
+            enemy.moveToNextXPosition(delta);
+          } else if (xMove.hp <= 0) {
+            this.killEnemy(enemy);
+            enemy.position = xMove.position;
+          } else {
+            const yMove = enemy.nextYPositionAsObject(delta);
+            if (this.checkCollisions(yMove, enemyNumber)) {
+              enemy.setHP(yMove.hp);
+              enemy.moveToNextYPosition(delta);
+            } else if (yMove.hp <= 0) {
+              this.killEnemy(enemy);
+              enemy.position = yMove.position;
+            }else{
+              enemy.setHP(yMove.hp);
+            }
+          }
+        } else {
+          enemy.setHP(nextMove.hp);
+        }
+      }
+    }
+  }
+
+  killPlayer(keydown){
+    this.player.die();
+    keydown[KEY.UP] = false;
+    keydown[KEY.LEFT] = false;
+    keydown[KEY.RIGHT] = false;
+    keydown[KEY.DOWN] = false;
+  }
+
+  updatePlayer(delta, keydown){
     this.player.setVelocity(directionForKeys(keydown));
     const nextPosition = this.player.nextPositionAsObject(delta);
-    if(this.checkCollisions(nextPosition)){
+    if (this.checkCollisions(nextPosition)) {
+      this.player.setHP(nextPosition.hp);
       this.player.moveToNextPosition(delta);
-    }
-    else{
-      if(nextPosition.dead){
-        this.player.die();
-        keydown[KEY.UP] = false;
-        keydown[KEY.LEFT] = false;
-        keydown[KEY.RIGHT] = false;
-        keydown[KEY.DOWN] = false;
+    } else {
+      if (nextPosition.hp <= 0) {
+        this.killPlayer(keydown);
         this.player.position = nextPosition.position;
-      }else{
-        if(this.player.velocity[0] !== 0 && this.player.velocity[1] !== 0){
+      } else {
+        if (this.player.velocity[0] !== 0 && this.player.velocity[1] !== 0) {
           const xMove = this.player.nextXPositionAsObject(delta);
-          if(this.checkCollisions(xMove)) {
+          if (this.checkCollisions(xMove)) {
+            this.player.setHP(xMove.hp);
             this.player.moveToNextXPosition(delta);
-          }
-          else{
+          } else if (xMove.hp <= 0) {
+            this.killPlayer(keydown);
+            this.player.position = xMove.position;
+          } else {
             const yMove = this.player.nextYPositionAsObject(delta);
-            if (this.checkCollisions(yMove)){
+            if (this.checkCollisions(yMove)) {
+              this.player.setHP(yMove.hp);
               this.player.moveToNextYPosition(delta);
-            } 
-            else this.stopPlayer(keydown);
+            } else if (yMove.hp <= 0) {
+              this.killPlayer(keydown);
+              this.player.position = yMove.position;
+            } else {
+              this.player.setHP(yMove.hp);
+              this.stopPlayer(keydown);
+            }
           }
-        }else{
+        } else {
+          this.player.setHP(nextPosition.hp);
           this.stopPlayer(keydown);
         }
-        
       }
     }
   }
   stopPlayer(keydown){
     this.setPlayerVelocity(DIRECTION.STATIONARY.slice());
   }
-  checkCollisions(object){
+  checkCollisions(object, enemyNumber = false){
+    let unobstructed = true;
     if(!checkBounds(object)){
-      return false;
+      unobstructed = false;
     }
     for(let i = 0; i < this.obstacles.length; ++i){
       if(boxCollision(this.obstacles[i], object)){
         if(this.obstacles[i].deadly && object.killable){
-          object.dead = true;
+          object.hp -= this.obstacles[i].damage;
         }
-        return false;
+        unobstructed = false;
       } 
     }
-    return true;
+    // if(isEnemy) return unobstructed;
+    for (let i = 0; i < this.enemies.length; ++i) {
+      if (enemyNumber !== i && boxCollision(this.enemies[i], object)) {
+        if (this.enemies[i].deadly && object.killable && enemyNumber === false) {
+          object.hp -= this.enemies[i].damage;
+        }
+        unobstructed = false;
+      }
+    }
+    return unobstructed;
   }
   draw(ctx, frame){
     this.player.draw(ctx, frame);
     this.obstacles.forEach(obstacle=>obstacle.draw(ctx, frame));
+    this.enemies.forEach(enemy=>enemy.draw(ctx, frame));
   }
   addPlayerVelocity(direction){
     this.player.addVelocity(direction);

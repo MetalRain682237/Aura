@@ -1,7 +1,7 @@
 export const WIDTH = 1280;
 export const HEIGHT = 720;
 export const PADDING = 10;
-export const BACKGROUND_TILE_SIZE = 150;
+export const BACKGROUND_TILE_SIZE = 400;
 export const MOSAIC_SIZE = 50;
 export const CANVAS = {
   position: [PADDING,PADDING],
@@ -16,7 +16,7 @@ export const COLOR = {
   DARK_BLUE: "#1c92d2",
   LIGHT_BLUE: "#54EFEA",
   RED: "#FF1234",
-  TRANSPARENT_BACKGROUND: "rgba(20,50,255,.4)"
+  WHITE: "#FFFFFF"
 };
 export const FONT = "Orbitron";
 

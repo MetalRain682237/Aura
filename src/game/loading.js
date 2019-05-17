@@ -8,6 +8,8 @@ export const loadingScreen = (ctx, frame)=>{
 };
 
 const drawLogo = (ctx) => {
+  ctx.shadowColor = COLOR.LIGHT_BLUE;
+  ctx.shadowBlur = 5;
   ctx.beginPath();
   ctx.fillStyle = COLOR.LIGHT_BLUE;
   ctx.textAlign = "center";
