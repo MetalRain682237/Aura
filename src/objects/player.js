@@ -5,6 +5,7 @@ export default class Player extends GameObject{
   constructor(options){
     super(options);
     this.images = IMAGES.PLAYER;
+    this.killable = true;
   }
   draw(ctx, frame){
     
@@ -47,7 +48,7 @@ export default class Player extends GameObject{
         break;
     }
     if(this.velocity.join(",") === DIRECTION.STATIONARY.join(","))
-      imgNumber = 0;
+      imgNumber = 1;
 
     const img = this.images[imgDirection][imgNumber];
 
@@ -55,6 +56,12 @@ export default class Player extends GameObject{
     ctx.moveTo(...this.position);
     ctx.drawImage(img, ...this.position, this.width, this.height);
     ctx.closePath();
+  }
+
+  die(){
+    this.dead = true;
+    this.position = [-1, -1];
+    this.velocity = [0, 0];
   }
   
 }

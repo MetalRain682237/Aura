@@ -5,6 +5,7 @@ import {gameScreen} from "./game_screen";
 import {pauseScreen} from "./pause";
 import {loadingScreen} from "./loading";
 import { loadImages } from "../util/game_util";
+import { gameOverScreen } from "./game_over_screen";
 
 export default class Game{
   constructor(ctx){
@@ -39,6 +40,13 @@ export default class Game{
       case STATE.PLAYING:
         this.game.update(delta, this.keyDown);
         gameScreen(this.ctx, this.frame, this.game);
+        if(this.game.player.dead){
+          this.state = STATE.GAME_OVER;
+        }
+        break;
+      case STATE.GAME_OVER:
+        gameScreen(this.ctx, this.frame, this.game);
+        gameOverScreen(this.ctx, this.frame);
         break;
       default:
         break;
@@ -49,13 +57,15 @@ export default class Game{
     if (e.repeat || this.keyDown[e.keyCode]) return;
     switch (e.keyCode){
       case KEY.ENTER: //enter
-        if(this.state === STATE.TITLE){
+        if(this.state === STATE.TITLE || this.state === STATE.GAME_OVER){
           this.game = new GameState();
           this.state = STATE.PLAYING;
         }
         break;
-      case KEY.P: //p
       case KEY.SPACE:
+        console.log(this.game.player.position.join(","));
+        break;
+      case KEY.P: //p
         if(this.state === STATE.PLAYING){
           this.state = STATE.PAUSED;
           this.game.setPlayerVelocity(DIRECTION.STATIONARY.slice());
@@ -74,24 +84,20 @@ export default class Game{
       case KEY.UP:
         if(this.state === STATE.PLAYING){ 
           this.keyDown[KEY.UP] = true;
-          this.game.addPlayerVelocity(DIRECTION.N);
         }
         break;
       case KEY.DOWN:
         if(this.state === STATE.PLAYING){
-          this.game.addPlayerVelocity(DIRECTION.S);
           this.keyDown[KEY.DOWN] = true;
         } 
         break;
       case KEY.LEFT:
         if (this.state === STATE.PLAYING) {
-          this.game.addPlayerVelocity(DIRECTION.W);
           this.keyDown[KEY.LEFT] = true;
         } 
         break;
       case KEY.RIGHT:
         if (this.state === STATE.PLAYING) {
-          this.game.addPlayerVelocity(DIRECTION.E);
           this.keyDown[KEY.RIGHT] = true;
         } 
         break;
@@ -105,25 +111,21 @@ export default class Game{
     switch(e.keyCode){
       case KEY.UP:
         if(this.state === STATE.PLAYING) {
-          this.game.removePlayerVelocity(DIRECTION.N);
           this.keyDown[KEY.UP] = false;
         }
         break;
       case KEY.DOWN:
         if(this.state === STATE.PLAYING) {
-          this.game.removePlayerVelocity(DIRECTION.S);
           this.keyDown[KEY.DOWN] = false;
         }
         break;
       case KEY.LEFT:
         if(this.state === STATE.PLAYING) {
-          this.game.removePlayerVelocity(DIRECTION.W);
           this.keyDown[KEY.LEFT] = false;
         }
         break;
       case KEY.RIGHT:
         if(this.state === STATE.PLAYING){
-          this.game.removePlayerVelocity(DIRECTION.E);
           this.keyDown[KEY.RIGHT] = false;
         }
         break;

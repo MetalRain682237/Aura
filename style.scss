@@ -28,52 +28,6 @@ body{
   canvas{
     margin-top: 50px;
   }
-  section{
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    position: relative;
-
-    h2{
-      margin: 20px;
-      border-bottom: 1px solid $light-blue;
-      border-right: 1px solid $light-blue;
-      padding: 10px 20px;
-  
-    }
-    h2:hover{
-      color: $dark-blue;
-    }
-
-    h2 + ul{
-      display: none;
-      position: absolute;
-      top: 70px;
-      left: 20px;
-      list-style: none;
-      padding: 0px;
-      margin: 0px;
-      border-bottom: 1px solid $light-blue;
-      border-left: 1px solid $light-blue;
-      padding: 10px;
-  
-    }
-
-    h2:hover + ul, ul:hover{
-      display: block;
-    }
-
-    ul{
-      li{
-        padding: 10px;
-      }
-      li:before{
-        content: "⇀ ";
-        font-family: initial;
-      }
-    }
-  }
 }
 
 

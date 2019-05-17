@@ -1,8 +1,8 @@
-export const WIDTH = 960;
-export const HEIGHT = 540;
+export const WIDTH = 1280;
+export const HEIGHT = 720;
 export const PADDING = 10;
 export const BACKGROUND_TILE_SIZE = 150;
-
+export const MOSAIC_SIZE = 50;
 export const CANVAS = {
   position: [PADDING,PADDING],
   width: WIDTH - 2*PADDING,
@@ -15,6 +15,7 @@ export const COLOR = {
   BACKGROUND: "#000000",
   DARK_BLUE: "#1c92d2",
   LIGHT_BLUE: "#54EFEA",
+  RED: "#FF1234",
   TRANSPARENT_BACKGROUND: "rgba(20,50,255,.4)"
 };
 export const FONT = "Orbitron";
@@ -23,7 +24,8 @@ export const STATE = {
   LOADING: 0,
   TITLE: 1,
   PLAYING: 2,
-  PAUSED: 3
+  PAUSED: 3,
+  GAME_OVER: 4
 };
 
 export const FPS = 60;

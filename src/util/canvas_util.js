@@ -38,3 +38,16 @@ const clearPadding = (ctx)=>{
   ctx.fillRect(WIDTH-PADDING,0,PADDING,HEIGHT);
   ctx.fillRect(0,HEIGHT-PADDING,WIDTH,PADDING);
 };
+
+//https://stackoverflow.com/a/28056903
+export const hexToRGB = (hex, alpha)=>{
+  const r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
+
+  if (alpha) {
+    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+  } else {
+    return "rgb(" + r + ", " + g + ", " + b + ")";
+  }
+};
