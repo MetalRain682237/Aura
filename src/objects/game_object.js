@@ -14,7 +14,8 @@ export default class GameObject{
     this.killable = false;
     this.deadly = false;
     this.dead = false;
-    this.hp = options.hp || 1;
+    this.hp = options.hp || 0;
+    this.maxHp = options.hp || 0;
     this.damage = options.damage || 0;
     this.grace = options.grace || [[0, 0], [0, 0]]; //grace pixels in each direction for hitbox
                                                     //[[startx, endx], [starty, endy]]
@@ -31,6 +32,19 @@ export default class GameObject{
     ctx.shadowColor = this.color;
     ctx.shadowBlur = 5 + (2 * (Math.sin(frame * 2 / FPS) + 1));
     ctx.fillRect(...this.position, this.width, this.height);
+    ctx.closePath();
+  }
+  drawHp(ctx){
+    if(!this.hp || this.dead) return;
+    const [startX, startY, width, height] = this.getHitbox();
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#00ff00";
+    ctx.shadowBlur = 0;
+
+    ctx.moveTo(startX, startY - 5);
+    ctx.lineTo(startX + (width * this.hp / this.maxHp), startY - 5);
+    ctx.stroke();
     ctx.closePath();
   }
   drawImage(ctx, img){
@@ -62,18 +76,25 @@ export default class GameObject{
   nextPositionAsObject(delta){
     return {position: this.nextPosition(delta), width: this.width, height: this.height, collidable: this.collidable, killable: this.killable, grace: this.grace, hp: this.hp};
   }
-  moveToNextPosition(delta){
-    if(this.velocity.join(",") === DIRECTION.STATIONARY.join(",")){
+  setFacing(direction){
+    if (direction.join(",") === DIRECTION.STATIONARY.join(",")) {
       //leave facing direction alone
-    }else if(this.velocity.join(",") === DIRECTION.N.join(",") || this.velocity.join(",") === DIRECTION.W.join(",") || this.velocity.join(",") === DIRECTION.E.join(",") || this.velocity.join(",") === DIRECTION.S.join(",")){
-      this.facing = this.velocity.slice();
-    }else if(this.velocity.join(",") === DIRECTION.NW.join(",")){
+    } else if (direction.join(",") === DIRECTION.N.join(",") || direction.join(",") === DIRECTION.W.join(",") || direction.join(",") === DIRECTION.E.join(",") || direction.join(",") === DIRECTION.S.join(",")) {
+      this.facing = direction.slice();
+    } else if (direction.join(",") === DIRECTION.NW.join(",")) {
+      this.facing = DIRECTION.N;
+    } else if (direction.join(",") === DIRECTION.NE.join(",")) {
+      this.facing = DIRECTION.N;
+    } else if (direction.join(",") === DIRECTION.SW.join(",")) {
       this.facing = DIRECTION.W;
-    }else if(this.velocity.join(",") === DIRECTION.NE.join(",")){
+    } else if (direction.join(",") === DIRECTION.SE.join(",")) {
       this.facing = DIRECTION.E;
-    }else{
+    } else {
       this.facing = DIRECTION.S;
     }
+  }
+  moveToNextPosition(delta){
+    this.setFacing(this.velocity);
     this.position = this.nextPosition(delta);
   }
 
@@ -85,17 +106,7 @@ export default class GameObject{
     return { position: this.nextXPosition(delta), width: this.width, height: this.height, collidable: this.collidable, killable: this.killable, grace: this.grace, hp: this.hp};
   }
   moveToNextXPosition(delta){
-    if(this.velocity.join(",") === DIRECTION.STATIONARY.join(",")){
-      //leave facing direction alone
-    }else if(this.velocity.join(",") === DIRECTION.N.join(",") || this.velocity.join(",") === DIRECTION.W.join(",") || this.velocity.join(",") === DIRECTION.E.join(",") || this.velocity.join(",") === DIRECTION.S.join(",")){
-      this.facing = this.velocity.slice();
-    }else if(this.velocity.join(",") === DIRECTION.NW.join(",")){
-      this.facing = DIRECTION.W;
-    }else if(this.velocity.join(",") === DIRECTION.NE.join(",")){
-      this.facing = DIRECTION.E;
-    }else{
-      this.facing = DIRECTION.S;
-    }
+    this.setFacing(this.velocity);
     this.position = this.nextXPosition(delta);
   }
 
@@ -107,17 +118,7 @@ export default class GameObject{
     return { position: this.nextYPosition(delta), width: this.width, height: this.height, collidable: this.collidable, killable: this.killable, grace: this.grace, hp: this.hp };
   }
   moveToNextYPosition(delta) {
-    if (this.velocity.join(",") === DIRECTION.STATIONARY.join(",")) {
-      //leave facing direction alone
-    } else if (this.velocity.join(",") === DIRECTION.N.join(",") || this.velocity.join(",") === DIRECTION.W.join(",") || this.velocity.join(",") === DIRECTION.E.join(",") || this.velocity.join(",") === DIRECTION.S.join(",")) {
-      this.facing = this.velocity.slice();
-    } else if (this.velocity.join(",") === DIRECTION.NW.join(",")) {
-      this.facing = DIRECTION.W;
-    } else if (this.velocity.join(",") === DIRECTION.NE.join(",")) {
-      this.facing = DIRECTION.E;
-    } else {
-      this.facing = DIRECTION.S;
-    }
+    this.setFacing(this.velocity);
     this.position = this.nextYPosition(delta);
   }
 
@@ -132,5 +133,8 @@ export default class GameObject{
   setVelocity(direction){
     this.velocity[0] = direction[0];
     this.velocity[1] = direction[1];
+  }
+  getHitbox(){
+    return [this.position[0] + this.grace[0][0], this.position[1] + this.grace[1][0], this.width - this.grace[0][1] - this.grace[0][0], this.height - this.grace[1][1] - this.grace[1][0]];
   }
 }

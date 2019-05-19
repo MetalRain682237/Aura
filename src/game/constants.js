@@ -66,5 +66,14 @@ export const IMAGES = {
     down: [],
     left: [],
     right: []
-  }
+  },
+  ENEMIES:{
+    ROBOT:{
+      up: [],
+      down: [],
+      left: [],
+      right: []
+    }
+  },
+
 };

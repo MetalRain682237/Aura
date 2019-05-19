@@ -3,6 +3,7 @@ import { IMAGES, DIRECTION, SPRITE_DURATION } from "../game/constants";
 
 export default class Player extends GameObject{
   constructor(options){
+    options.hp = options.hp || 1;
     super(options);
     this.images = IMAGES.PLAYER;
     this.killable = true;
@@ -37,6 +38,7 @@ export default class Player extends GameObject{
     const img = this.images[imgDirection][imgNumber];
 
     super.drawImage(ctx, img);
+    super.drawHp(ctx);
   }
 
   die(){

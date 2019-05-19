@@ -21,6 +21,15 @@ export const loadImages = (callback)=>{
         img.src = `images/sprite/${direction}_${i}.png`;
         IMAGES.PLAYER[direction].push(img);
       }
+
+      for (let i = 1; i <= 4; ++i) {
+        total += 1;
+        let img = new Image();
+        img.onload = loaded;
+        img.src = `images/enemies/robot_${direction}_${i}.png`;
+        IMAGES.ENEMIES.ROBOT[direction].push(img);
+      }
+
     });
 
     //gets called when an image gets loaded

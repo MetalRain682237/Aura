@@ -1,4 +1,4 @@
-import { WIDTH, HEIGHT, DIRECTION, CANVAS, KEY, PADDING } from "../game/constants";
+import { WIDTH, HEIGHT, DIRECTION, CANVAS, KEY, PADDING, IMAGES } from "../game/constants";
 import { checkBounds, boxCollision, directionForKeys } from "../util/game_util";
 import Player from "./player";
 import GameObject from "./game_object";
@@ -61,30 +61,38 @@ export default class GameState{
       new Enemy({
         position: [100 , 100],
         velocity: [0, 0],
-        width: 30,
-        height: 30,
-        color: "purple"
+        width: 64,
+        height: 64,
+        grace: [[5, 5], [5, 0]],
+        hp: 100,
+        image: IMAGES.ENEMIES.ROBOT
       }),
       new Enemy({
         position: [1100 , 100],
         velocity: [0, 0],
-        width: 30,
-        height: 30,
-        color: "orange"
+        width: 64,
+        height: 64,
+        hp: 100,
+        grace: [[5, 5], [5, 0]],
+        image: IMAGES.ENEMIES.ROBOT
       }),
       new Enemy({
         position: [100 , 600],
         velocity: [0, 0],
-        width: 30,
-        height: 30,
-        color: "#BADA55"
+        width: 64,
+        height: 64,
+        hp: 100,
+        grace: [[5, 5], [5, 0]],
+        image: IMAGES.ENEMIES.ROBOT
       }),
       new Enemy({
         position: [1100 , 600],
         velocity: [0, 0],
-        width: 30,
-        height: 30,
-        color: "green"
+        width: 64,
+        height: 64,
+        hp: 100,
+        grace: [[5, 5], [5, 0]],
+        image: IMAGES.ENEMIES.ROBOT
       }),
     ];
   }
@@ -129,7 +137,7 @@ export default class GameState{
             }
           }
         } else {
-          enemy.setHP(nextMove.hp);
+          enemy.setHP(nextPosition.hp);
         }
       }
     }
@@ -210,8 +218,8 @@ export default class GameState{
     return unobstructed;
   }
   draw(ctx, frame){
-    this.player.draw(ctx, frame);
     this.obstacles.forEach(obstacle=>obstacle.draw(ctx, frame));
+    this.player.draw(ctx, frame);
     this.enemies.forEach(enemy=>enemy.draw(ctx, frame));
   }
   addPlayerVelocity(direction){
