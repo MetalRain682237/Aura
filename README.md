@@ -37,5 +37,6 @@
 - More enemies
 - More levels
 - More obstacles
+- Powerups
 - Score tracking
 - Sound effects (mutable, of course!)
