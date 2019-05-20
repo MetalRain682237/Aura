@@ -9,7 +9,7 @@ export default class GameObject{
     this.width = options.width || 10;
     this.height = options.height || 10;
     this.color = options.color || COLOR.LIGHT_BLUE;
-    this.collidable = options.collidable || true;
+    this.collidable = options.collidable !== undefined ? options.collidable : true;
     this.moveSpeed = options.moveSpeed || MOVE_SPEED;
     this.killable = false;
     this.deadly = false;
@@ -42,8 +42,8 @@ export default class GameObject{
     ctx.strokeStyle = "#00ff00";
     ctx.shadowBlur = 0;
 
-    ctx.moveTo(startX, startY - 5);
-    ctx.lineTo(startX + (width * this.hp / this.maxHp), startY - 5);
+    ctx.moveTo(startX, startY - 7);
+    ctx.lineTo(startX + (width * this.hp / this.maxHp), startY - 7);
     ctx.stroke();
     ctx.closePath();
   }

@@ -31,6 +31,13 @@ export const loadImages = (callback)=>{
       }
 
     });
+  for (let i = 0; i < 12; ++i) {
+    total += 1;
+    let img = new Image();
+    img.onload = loaded;
+    img.src = `images/explosion/explosion_${i}.png`;
+    IMAGES.EXPLOSION.push(img);
+  }
 
     //gets called when an image gets loaded
     function loaded() {
@@ -47,8 +54,6 @@ export const loadImages = (callback)=>{
   };
 
   export const boxCollision = (object1, object2)=>{
-    if (!object1.collidable) return false;
-    if (!object2.collidable) return false;
     const [startX, startY] = object1.position;
     const [otherStartX, otherStartY] = object2.position;
     const [endX, endY] = [startX + object1.width, startY + object1.height];
@@ -87,9 +92,36 @@ export const directionForKeys = (keydown) =>{
   }
   return velocity;
 };
+export const bulletVelocityForKeys = (keydown) => {
+  const velocity = [0, 0];
+  if (keydown[KEY.W]) {
+    velocity[1] -= 1;
+  }
+  if (keydown[KEY.S]) {
+    velocity[1] += 1;
+  }
+  if (keydown[KEY.A]) {
+    velocity[0] -= 1;
+  }
+  if (keydown[KEY.D]) {
+    velocity[0] += 1;
+  }
+  return velocity;
+};
 
 export const compare = (a, b) => {
   if (a < b) return 1;
   if (a > b) return -1;
   return 0;
+};
+
+export const resetKeys = (keydown)=>{
+  keydown[KEY.UP] = false;
+  keydown[KEY.LEFT] = false;
+  keydown[KEY.RIGHT] = false;
+  keydown[KEY.DOWN] = false;
+  keydown[KEY.W] = false;
+  keydown[KEY.A] = false;
+  keydown[KEY.S] = false;
+  keydown[KEY.D] = false;
 };

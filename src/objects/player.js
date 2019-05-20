@@ -1,5 +1,5 @@
 import GameObject from "./game_object";
-import { IMAGES, DIRECTION, SPRITE_DURATION } from "../game/constants";
+import { IMAGES, DIRECTION, SPRITE_DURATION, FPS } from "../game/constants";
 
 export default class Player extends GameObject{
   constructor(options){
@@ -7,7 +7,19 @@ export default class Player extends GameObject{
     super(options);
     this.images = IMAGES.PLAYER;
     this.killable = true;
+    this.bulletRate = FPS / 6;
+    this.bulletDelay = 0;
   }
+  canFireBullet(){
+    return this.bulletDelay <= 0;
+  }
+  setBulletDelay(){
+    this.bulletDelay = this.bulletRate;
+  }
+  updateBulletDelay(delta){
+    this.bulletDelay = Math.max(0, this.bulletDelay - delta);
+  }
+  
   draw(ctx, frame){
     
     //figure out what image to key into
@@ -38,7 +50,6 @@ export default class Player extends GameObject{
     const img = this.images[imgDirection][imgNumber];
 
     super.drawImage(ctx, img);
-    super.drawHp(ctx);
   }
 
   die(){

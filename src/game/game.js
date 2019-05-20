@@ -4,8 +4,9 @@ import {titleScreen} from "./title";
 import {gameScreen} from "./game_screen";
 import {pauseScreen} from "./pause";
 import {loadingScreen} from "./loading";
-import { loadImages } from "../util/game_util";
+import { loadImages, resetKeys } from "../util/game_util";
 import { gameOverScreen } from "./game_over_screen";
+import { winScreen } from "./win_screen";
 
 export default class Game{
   constructor(ctx){
@@ -19,7 +20,7 @@ export default class Game{
     this.requestId = requestAnimationFrame(this.nextFrame);
     document.addEventListener("keydown", this.handleKeydown);
     document.addEventListener("keyup", this.handleKeyup);
-    loadImages(()=>this.state = STATE.TITLE);
+    document.fonts.ready.then(()=>{ loadImages(() => this.state = STATE.TITLE); });
   }
 
   nextFrame(time){
@@ -42,11 +43,19 @@ export default class Game{
         gameScreen(this.ctx, this.frame, this.game);
         if(this.game.player.dead){
           this.state = STATE.GAME_OVER;
+          resetKeys(this.keyDown);
+        }else if(this.game.enemies.length === 0){
+          this.state = STATE.WIN;
+          resetKeys(this.keyDown);
         }
         break;
       case STATE.GAME_OVER:
         gameScreen(this.ctx, this.frame, this.game);
         gameOverScreen(this.ctx, this.frame);
+        break;
+      case STATE.WIN:
+        gameScreen(this.ctx, this.frame, this.game);
+        winScreen(this.ctx, this.frame, true, this.game);
         break;
       default:
         break;
@@ -60,6 +69,9 @@ export default class Game{
         if(this.state === STATE.TITLE || this.state === STATE.GAME_OVER){
           this.game = new GameState();
           this.state = STATE.PLAYING;
+        }else if(this.state === STATE.WIN){
+          this.game = new GameState();
+          this.state = STATE.PLAYING;
         }
         break;
       case KEY.SPACE:
@@ -69,10 +81,7 @@ export default class Game{
         if(this.state === STATE.PLAYING){
           this.state = STATE.PAUSED;
           this.game.setPlayerVelocity(DIRECTION.STATIONARY.slice());
-          this.keyDown[KEY.UP] = false;
-          this.keyDown[KEY.LEFT] = false;
-          this.keyDown[KEY.RIGHT] = false;
-          this.keyDown[KEY.DOWN] = false;
+          resetKeys(this.keyDown);
         }else if(this.state === STATE.PAUSED){
           this.state = STATE.PLAYING;
         }
@@ -82,24 +91,16 @@ export default class Game{
         cancelAnimationFrame(this.requestId);
         break;
       case KEY.UP:
-        if(this.state === STATE.PLAYING){ 
-          this.keyDown[KEY.UP] = true;
-        }
-        break;
       case KEY.DOWN:
-        if(this.state === STATE.PLAYING){
-          this.keyDown[KEY.DOWN] = true;
-        } 
-        break;
       case KEY.LEFT:
-        if (this.state === STATE.PLAYING) {
-          this.keyDown[KEY.LEFT] = true;
-        } 
-        break;
       case KEY.RIGHT:
-        if (this.state === STATE.PLAYING) {
-          this.keyDown[KEY.RIGHT] = true;
-        } 
+      case KEY.W:
+      case KEY.A:
+      case KEY.S:
+      case KEY.D:
+        if(this.state === STATE.PLAYING){ 
+          this.keyDown[e.keyCode] = true;
+        }
         break;
       default:
         console.log(e.keyCode);
@@ -110,23 +111,15 @@ export default class Game{
     if(!this.keyDown[e.keyCode]) return;
     switch(e.keyCode){
       case KEY.UP:
-        if(this.state === STATE.PLAYING) {
-          this.keyDown[KEY.UP] = false;
-        }
-        break;
       case KEY.DOWN:
-        if(this.state === STATE.PLAYING) {
-          this.keyDown[KEY.DOWN] = false;
-        }
-        break;
       case KEY.LEFT:
-        if(this.state === STATE.PLAYING) {
-          this.keyDown[KEY.LEFT] = false;
-        }
-        break;
       case KEY.RIGHT:
-        if(this.state === STATE.PLAYING){
-          this.keyDown[KEY.RIGHT] = false;
+      case KEY.W:
+      case KEY.A:
+      case KEY.S:
+      case KEY.D:
+        if(this.state === STATE.PLAYING) {
+          this.keyDown[e.keyCode] = false;
         }
         break;
       default:

@@ -18,7 +18,6 @@ export default class Enemy extends DeadlyObject{
     const img = this.image[imgDirection][imgNumber];
 
     super.drawImage(ctx, img);
-    super.drawHp(ctx);
   }
   die(){
     this.velocity = [0,0];

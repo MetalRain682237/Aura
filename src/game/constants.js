@@ -16,7 +16,9 @@ export const COLOR = {
   DARK_BLUE: "#1c92d2",
   LIGHT_BLUE: "#54EFEA",
   RED: "#FF1234",
-  WHITE: "#FFFFFF"
+  WHITE: "#FFFFFF",
+  PURPLE: "#FF00FF"
+
 };
 export const FONT = "Orbitron";
 
@@ -25,7 +27,8 @@ export const STATE = {
   TITLE: 1,
   PLAYING: 2,
   PAUSED: 3,
-  GAME_OVER: 4
+  GAME_OVER: 4,
+  WIN: 5
 };
 
 export const FPS = 60;
@@ -75,5 +78,6 @@ export const IMAGES = {
       right: []
     }
   },
+  EXPLOSION: []
 
 };

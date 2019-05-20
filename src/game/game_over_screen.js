@@ -17,7 +17,7 @@ const drawOverlay = (ctx, frame)=>{
     for(let y = 0; y * MOSAIC_SIZE < HEIGHT; y++){
       tile=random(tile);
       const alpha = 0.01 + (0.3 * random(tile));
-      ctx.fillStyle = hexToRGB(COLOR.LIGHT_BLUE, alpha);
+      ctx.fillStyle = hexToRGB(COLOR.RED, alpha);
       ctx.fillRect(x*MOSAIC_SIZE, y*MOSAIC_SIZE, MOSAIC_SIZE, MOSAIC_SIZE);
     }
   }

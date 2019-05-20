@@ -3,7 +3,7 @@ import { animateLine, clear } from "../util/canvas_util";
 
 export const loadingScreen = (ctx, frame)=>{
   clear(ctx);
-  drawLogo(ctx);
+  //drawLogo(ctx);
   drawLoading(ctx, frame);
 };
 
