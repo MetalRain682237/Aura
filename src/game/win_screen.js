@@ -4,7 +4,7 @@ import { random } from "../util/game_util";
 
 export const winScreen = (ctx, frame, nextLevel = true, game) => {
   drawOverlay(ctx, frame);
-  drawWin(ctx, frame);
+  drawWin(ctx, frame, nextLevel);
   if(nextLevel){
     drawNextLevel(ctx);
   } else {
@@ -27,10 +27,11 @@ const drawOverlay = (ctx, frame) => {
   }
   ctx.closePath();
 };
-const drawWin = (ctx, frame) => {
+const drawWin = (ctx, frame, nextLevel) => {
+  const height = nextLevel ? 190 : 250; 
   ctx.beginPath();
   ctx.fillStyle = hexToRGB(COLOR.BACKGROUND, 0.7);
-  ctx.fillRect(0, 150, WIDTH, 190);
+  ctx.fillRect(0, 150, WIDTH, height);
   ctx.strokeStyle = COLOR.LIGHT_BLUE;
   ctx.fillStyle = COLOR.LIGHT_BLUE;
   ctx.textAlign = "center";
@@ -56,5 +57,6 @@ const drawSupremeVictory = (ctx) => {
   ctx.beginPath();
   ctx.font = "30px " + FONT;
   ctx.fillText("You have beaten every level! You are the best!", WIDTH / 2, 320);
+  ctx.fillText("Press ENTER to restart", WIDTH / 2, 370);
   ctx.closePath();
 };

@@ -7,6 +7,7 @@ import {loadingScreen} from "./loading";
 import { loadImages, resetKeys } from "../util/game_util";
 import { gameOverScreen } from "./game_over_screen";
 import { winScreen } from "./win_screen";
+import { NUM_LEVELS } from "./levels";
 
 export default class Game{
   constructor(ctx){
@@ -14,6 +15,7 @@ export default class Game{
     this.ctx = ctx;
     this.state = STATE.LOADING;
     this.frame = 0;
+    this.level = 0;
     this.nextFrame = this.nextFrame.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
     this.handleKeyup = this.handleKeyup.bind(this);
@@ -46,6 +48,7 @@ export default class Game{
           resetKeys(this.keyDown);
         }else if(this.game.enemies.length === 0){
           this.state = STATE.WIN;
+          this.level++;
           resetKeys(this.keyDown);
         }
         break;
@@ -55,7 +58,7 @@ export default class Game{
         break;
       case STATE.WIN:
         gameScreen(this.ctx, this.frame, this.game);
-        winScreen(this.ctx, this.frame, true, this.game);
+        winScreen(this.ctx, this.frame, this.level < NUM_LEVELS, this.game);
         break;
       default:
         break;
@@ -67,10 +70,11 @@ export default class Game{
     switch (e.keyCode){
       case KEY.ENTER: //enter
         if(this.state === STATE.TITLE || this.state === STATE.GAME_OVER){
-          this.game = new GameState();
+          this.game = new GameState(this.level);
           this.state = STATE.PLAYING;
         }else if(this.state === STATE.WIN){
-          this.game = new GameState();
+          if(this.level >= NUM_LEVELS) this.level = 0;
+          this.game = new GameState(this.level);
           this.state = STATE.PLAYING;
         }
         break;

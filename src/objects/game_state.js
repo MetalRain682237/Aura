@@ -1,109 +1,15 @@
-import { WIDTH, HEIGHT, DIRECTION, CANVAS, KEY, PADDING, IMAGES, MOVE_SPEED } from "../game/constants";
+import { DIRECTION} from "../game/constants";
 import { checkBounds, boxCollision, directionForKeys, bulletVelocityForKeys, resetKeys } from "../util/game_util";
-import Player from "./player";
-import GameObject from "./game_object";
-import DeadlyObject from "./deadly_object";
-import Enemy from "./enemy";
 import Bullet from "./bullet";
 import Explosion from "./explosion";
+import { getLevel } from "../game/levels";
 
 export default class GameState{
-  constructor(){
-    this.player = new Player({
-      position: [WIDTH/2 - PADDING, HEIGHT/2 - PADDING],
-      velocity: DIRECTION.STATIONARY.slice(),
-      facing: DIRECTION.S,
-      width: 21,
-      height: 34.5,
-      grace: [[3,3],[3,3]],
-      hp: 100,
-      moveSpeed: 1.2 * MOVE_SPEED
-    });
-    this.obstacles = [
-      new GameObject({
-        position: [570, 197],
-        velocity: [0,0],
-        width: 3,
-        height: 111
-      }),
-      new GameObject({
-        position: [700, 197],
-        velocity: [0,0],
-        width: 3,
-        height: 111
-      }),
-      new GameObject({
-        position: [424, 308],
-        velocity: [0,0],
-        width: 149,
-        height: 3
-      }),
-      new GameObject({
-        position: [424, 458],
-        velocity: [0,0],
-        width: 426,
-        height: 3
-      }),
-
-      new GameObject({
-        position: [700, 308],
-        velocity: [0,0],
-        width: 148,
-        height: 3
-      }),
-      
-      new DeadlyObject({
-        position: [849, 308],
-        velocity: [0,0],
-        width: 3,
-        height: 153,
-        grace: [[3,3],[0,0]],
-        collidable: false
-      }),
-      
-    ];
-    this.enemies = [
-      new Enemy({
-        position: [100 , 100],
-        velocity: [0, 0],
-        width: 48,
-        height: 48,
-        grace: [[3,3], [3, 0]],
-        hp: 100,
-        image: IMAGES.ENEMIES.ROBOT,
-        moveSpeed: 0.7 * MOVE_SPEED
-      }),
-      new Enemy({
-        position: [1100 , 100],
-        velocity: [0, 0],
-        width: 48,
-        height: 48,
-        hp: 100,
-        grace: [[3,3], [3, 0]],
-        image: IMAGES.ENEMIES.ROBOT,
-        moveSpeed: 0.7 *MOVE_SPEED
-      }),
-      new Enemy({
-        position: [100 , 600],
-        velocity: [0, 0],
-        width: 48,
-        height: 48,
-        hp: 100,
-        grace: [[3,3], [3, 0]],
-        image: IMAGES.ENEMIES.ROBOT,
-        moveSpeed: 0.7 * MOVE_SPEED
-      }),
-      new Enemy({
-        position: [1100 , 600],
-        velocity: [0, 0],
-        width: 48,
-        height: 48,
-        hp: 100,
-        grace: [[3,3], [3, 0]],
-        image: IMAGES.ENEMIES.ROBOT,
-        moveSpeed: 0.7 *MOVE_SPEED
-      }),
-    ];
+  constructor(levelNumber){
+    const level = getLevel(levelNumber);
+    this.player = level.player;
+    this.obstacles = level.obstacles;
+    this.enemies = level.enemies;
     this.bullets = [];
     this.explosions = [];
   }
