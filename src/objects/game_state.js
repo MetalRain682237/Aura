@@ -1,5 +1,5 @@
 import { DIRECTION} from "../game/constants";
-import { checkBounds, boxCollision, directionForKeys, bulletVelocityForKeys, resetKeys } from "../util/game_util";
+import { checkBounds, boxCollision, directionForKeys, bulletVelocityForKeys, resetKeys, hitboxCollision } from "../util/game_util";
 import Bullet from "./bullet";
 import Explosion from "./explosion";
 import { getLevel } from "../game/levels";
@@ -14,9 +14,11 @@ export default class GameState{
     this.explosions = [];
   }
   update(delta, keydown){
+    this.obstacles.forEach(obstacle=>obstacle.update(delta));
     this.updatePlayer(delta, keydown);
     this.shoot(delta, keydown);
     this.bullets.forEach(bullet=>this.updateBullet(delta, bullet));
+    this.allObstacles = this.obstacles.concat(this.enemies);//.concat(this.bullets); //add in bullets for bullet dodge!
     this.enemies.forEach((enemy, i)=>this.updateEnemy(delta, enemy, i));
     this.purgeDeadObjects();
   }
@@ -78,7 +80,7 @@ export default class GameState{
   }
   updateEnemy(delta, enemy, enemyNumber){
 
-    enemy.moveToward(this.player); //update velocity
+    enemy.moveToward(this.player, this.allObstacles, delta); //update velocity
 
     const nextPosition = enemy.nextPositionAsObject(delta);
 

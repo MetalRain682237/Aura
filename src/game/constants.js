@@ -3,6 +3,13 @@ export const HEIGHT = 720;
 export const PADDING = 10;
 export const BACKGROUND_TILE_SIZE = 400;
 export const MOSAIC_SIZE = 50;
+
+export const AI_RESOLUTION = 32;
+export const AI_LIMIT = 1024;
+
+export const HORIZONTAL = "HORIZONTAL";
+export const VERTICAL = "VERTICAL";
+
 export const CANVAS = {
   position: [PADDING,PADDING],
   width: WIDTH - 2*PADDING,
@@ -72,6 +79,18 @@ export const IMAGES = {
   },
   ENEMIES:{
     ROBOT:{
+      up: [],
+      down: [],
+      left: [],
+      right: []
+    },
+    SLIME:{
+      up: [],
+      down: [],
+      left: [],
+      right: []
+    },
+    KNIGHT: {
       up: [],
       down: [],
       left: [],

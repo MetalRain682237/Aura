@@ -23,9 +23,9 @@ export default class Enemy extends DeadlyObject{
     this.velocity = [0,0];
     this.dead = true;
   }
-  moveToward(object){
+  moveToward(target, obstacles, delta){
     const [startX, startY, width, height] = this.getHitbox();
-    const [otherStartX, otherStartY, otherWidth, otherHeight] = object.getHitbox();
+    const [otherStartX, otherStartY, otherWidth, otherHeight] = target.getHitbox();
     if(otherStartX + otherWidth/2 <= startX + width && otherStartX + otherWidth/2 >= startX ){
       this.velocity[0] = 0;
     } else if(startX < otherStartX + otherWidth/2){

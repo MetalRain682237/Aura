@@ -20,7 +20,7 @@ export default class GameObject{
     this.grace = options.grace || [[0, 0], [0, 0]]; //grace pixels in each direction for hitbox
                                                     //[[startx, endx], [starty, endy]]
   }
-
+  update(delta){} //default does nothing
   setHP(hp){
     this.hp = hp;
     if(hp < 0) this.dead = true;
@@ -136,5 +136,8 @@ export default class GameObject{
   }
   getHitbox(){
     return [this.position[0] + this.grace[0][0], this.position[1] + this.grace[1][0], this.width - this.grace[0][1] - this.grace[0][0], this.height - this.grace[1][1] - this.grace[1][0]];
+  }
+  getHitboxAt(position){
+    return [position[0] + this.grace[0][0], position[1] + this.grace[1][0], this.width - this.grace[0][1] - this.grace[0][0], this.height - this.grace[1][1] - this.grace[1][0]];
   }
 }

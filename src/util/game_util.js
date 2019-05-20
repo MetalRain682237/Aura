@@ -23,11 +23,21 @@ export const loadImages = (callback)=>{
       }
 
       for (let i = 1; i <= 4; ++i) {
-        total += 1;
+        total += 3;
         let img = new Image();
         img.onload = loaded;
         img.src = `images/enemies/robot_${direction}_${i}.png`;
         IMAGES.ENEMIES.ROBOT[direction].push(img);
+
+        img = new Image();
+        img.onload = loaded;
+        img.src = `images/enemies/slime_${direction}_${i}.png`;
+        IMAGES.ENEMIES.SLIME[direction].push(img);
+
+        img = new Image();
+        img.onload = loaded;
+        img.src = `images/enemies/knight_${direction}_${i}.png`;
+        IMAGES.ENEMIES.KNIGHT[direction].push(img);
       }
 
     });
@@ -67,7 +77,20 @@ export const loadImages = (callback)=>{
 
   export const checkBounds = (object)=>{
     return !(object.position[0] + object.grace[0][0] < PADDING  || object.position[0] + object.width - object.grace[0][1] > WIDTH - PADDING ||
-      object.position[1] + object.grace[1][0] < PADDING || object.position[1] + object.height - object.grace[1][1] > HEIGHT - PADDING)
+      object.position[1] + object.grace[1][0] < PADDING || object.position[1] + object.height - object.grace[1][1] > HEIGHT - PADDING);
+  };
+  export const hitboxCollision = ([startX,startY,width,height], [otherStartX, otherStartY, otherWidth, otherHeight])=>{
+    const [endX, endY] = [startX + width, startY + height];
+    const [otherEndX, otherEndY] = [otherStartX + otherWidth, otherStartY + otherHeight];
+
+    return (startX <= otherEndX &&
+      endX  >= otherStartX &&
+      startY <= otherEndY &&
+      endY >= otherStartY);
+  };
+  export const hitboxInBounds = ([x,y,width,height]) => {
+    return !(x < PADDING || x + width > WIDTH - PADDING ||
+      y < PADDING || y + height > HEIGHT - PADDING);
   };
 
 //https://stackoverflow.com/a/19303725
