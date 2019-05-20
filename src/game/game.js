@@ -79,7 +79,7 @@ export default class Game{
         }
         break;
       case KEY.SPACE:
-        console.log(this.game.player.position.join(","));
+        //console.log(this.game.player.position.join(","));
         break;
       case KEY.P: //p
         if(this.state === STATE.PLAYING){
@@ -91,8 +91,8 @@ export default class Game{
         }
         break;
       case KEY.Q: //q
-        console.log("quit");
-        cancelAnimationFrame(this.requestId);
+        //console.log("quit");
+        //cancelAnimationFrame(this.requestId);
         break;
       case KEY.UP:
       case KEY.DOWN:
@@ -107,7 +107,7 @@ export default class Game{
         }
         break;
       default:
-        console.log(e.keyCode);
+        //console.log(e.keyCode);
         break;
     }
   }
@@ -127,7 +127,7 @@ export default class Game{
         }
         break;
       default:
-        console.log(e.keyCode);
+        //console.log(e.keyCode);
         break;
     }
   }
