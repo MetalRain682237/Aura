@@ -20,14 +20,11 @@ body{
 #root{
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   background-color: $background;
   height: 100%;
 
-  canvas{
-    margin-top: 50px;
-  }
 }
 
 
