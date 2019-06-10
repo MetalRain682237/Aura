@@ -16,7 +16,8 @@
 - Webpack to bundle everything together
 
 ## Feature Highlights
-<img src="images/robot.gif" style="height:150px; "> <img src="images/knight.gif" style="height:150px; "> <img src="images/slimes.gif" style="height:150px; ">
+
+![Knight](images/knight.gif)
 
 1. Different AI behaviors - There are currently three enemies to showcase three AI options
     - Normal Enemy AI (the Robots) - These enemies head straight for you, without regard for walls. It is easy to get them caught on walls, and they follow predictable behavior, but in large quantities they can prove difficult.
