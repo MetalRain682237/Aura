@@ -46,6 +46,6 @@ const drawMenu = (ctx, frame)=>{
   ctx.font = "20px " + FONT;
   ctx.fillText("- Kill all the things", startX + 20, 500);
   ctx.fillText("- Don't get hit", startX + 20, 530);
-  ctx.fillText("- Don't get touch the lasers", startX + 20, 560);
+  ctx.fillText("- Don't touch the lasers", startX + 20, 560);
   ctx.closePath();
 };
